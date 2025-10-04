@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1A000001 /* PicoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A000002 /* PicoApp.swift */; };
-		1A000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A000004 /* ContentView.swift */; };
-		1A000005 /* Medication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A000006 /* Medication.swift */; };
-		1A000007 /* MedicationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A000008 /* MedicationStore.swift */; };
+		4A1234560000000000000001 /* PicoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234560000000000000002 /* PicoApp.swift */; };
+		4A1234560000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234560000000000000004 /* ContentView.swift */; };
+		4A1234560000000000000005 /* Medication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234560000000000000006 /* Medication.swift */; };
+		4A1234560000000000000007 /* MedicationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234560000000000000008 /* MedicationStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1A000001 /* Pico.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pico.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1A000002 /* PicoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicoApp.swift; sourceTree = "<group>"; };
-		1A000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		1A000006 /* Medication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medication.swift; sourceTree = "<group>"; };
-		1A000008 /* MedicationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationStore.swift; sourceTree = "<group>"; };
+		4A1234560000000000000009 /* Pico.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pico.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A1234560000000000000002 /* PicoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicoApp.swift; sourceTree = "<group>"; };
+		4A1234560000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4A1234560000000000000006 /* Medication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medication.swift; sourceTree = "<group>"; };
+		4A1234560000000000000008 /* MedicationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1A000009 /* Frameworks */ = {
+		4A123456000000000000000A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -32,91 +32,83 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A000010 = {
+		4A123456000000000000000B = {
 			isa = PBXGroup;
 			children = (
-				1A000011 /* Pico */,
-				1A000020 /* Products */,
+				4A123456000000000000000C /* Pico */,
+				4A123456000000000000000D /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		1A000011 /* Pico */ = {
+		4A123456000000000000000C /* Pico */ = {
 			isa = PBXGroup;
 			children = (
-				1A000012 /* Sources */,
-				1A000013 /* Resources */,
+				4A123456000000000000000E /* Sources */,
 			);
 			path = Pico;
 			sourceTree = "<group>";
 		};
-		1A000012 /* Sources */ = {
+		4A123456000000000000000D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1A000014 /* Pico */,
-				1A000015 /* Models */,
-				1A000016 /* Views */,
-				1A000017 /* Services */,
+				4A1234560000000000000009 /* Pico.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4A123456000000000000000E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4A123456000000000000000F /* Pico */,
+				4A1234560000000000000010 /* Models */,
+				4A1234560000000000000011 /* Views */,
+				4A1234560000000000000012 /* Services */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		1A000013 /* Resources */ = {
+		4A123456000000000000000F /* Pico */ = {
 			isa = PBXGroup;
 			children = (
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		1A000014 /* Pico */ = {
-			isa = PBXGroup;
-			children = (
-				1A000002 /* PicoApp.swift */,
+				4A1234560000000000000002 /* PicoApp.swift */,
 			);
 			path = Pico;
 			sourceTree = "<group>";
 		};
-		1A000015 /* Models */ = {
+		4A1234560000000000000010 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1A000006 /* Medication.swift */,
+				4A1234560000000000000006 /* Medication.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		1A000016 /* Views */ = {
+		4A1234560000000000000011 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1A000004 /* ContentView.swift */,
+				4A1234560000000000000004 /* ContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		1A000017 /* Services */ = {
+		4A1234560000000000000012 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				1A000008 /* MedicationStore.swift */,
+				4A1234560000000000000008 /* MedicationStore.swift */,
 			);
 			path = Services;
-			sourceTree = "<group>";
-		};
-		1A000020 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1A000001 /* Pico.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1A000021 /* Pico */ = {
+		4A1234560000000000000013 /* Pico */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1A000022 /* Build configuration list for PBXNativeTarget "Pico" */;
+			buildConfigurationList = 4A1234560000000000000014 /* Build configuration list for PBXNativeTarget "Pico" */;
 			buildPhases = (
-				1A000023 /* Sources */,
-				1A000009 /* Frameworks */,
-				1A000024 /* Resources */,
+				4A1234560000000000000015 /* Sources */,
+				4A123456000000000000000A /* Frameworks */,
+				4A1234560000000000000016 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -124,25 +116,25 @@
 			);
 			name = Pico;
 			productName = Pico;
-			productReference = 1A000001 /* Pico.app */;
+			productReference = 4A1234560000000000000009 /* Pico.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		1A000025 /* Project object */ = {
+		4A1234560000000000000017 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					1A000021 = {
+					4A1234560000000000000013 = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
-			buildConfigurationList = 1A000026 /* Build configuration list for PBXProject "Pico" */;
+			buildConfigurationList = 4A1234560000000000000018 /* Build configuration list for PBXProject "Pico" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -150,18 +142,18 @@
 				en,
 				Base,
 			);
-			mainGroup = 1A000010;
-			productRefGroup = 1A000020 /* Products */;
+			mainGroup = 4A123456000000000000000B;
+			productRefGroup = 4A123456000000000000000D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1A000021 /* Pico */,
+				4A1234560000000000000013 /* Pico */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1A000024 /* Resources */ = {
+		4A1234560000000000000016 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -171,21 +163,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1A000023 /* Sources */ = {
+		4A1234560000000000000015 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A000001 /* PicoApp.swift in Sources */,
-				1A000003 /* ContentView.swift in Sources */,
-				1A000005 /* Medication.swift in Sources */,
-				1A000007 /* MedicationStore.swift in Sources */,
+				4A1234560000000000000001 /* PicoApp.swift in Sources */,
+				4A1234560000000000000003 /* ContentView.swift in Sources */,
+				4A1234560000000000000005 /* Medication.swift in Sources */,
+				4A1234560000000000000007 /* MedicationStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1A000030 /* Debug */ = {
+		4A1234560000000000000019 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -248,7 +240,7 @@
 			};
 			name = Debug;
 		};
-		1A000031 /* Release */ = {
+		4A123456000000000000001A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -304,7 +296,7 @@
 			};
 			name = Release;
 		};
-		1A000032 /* Debug */ = {
+		4A123456000000000000001B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -332,7 +324,7 @@
 			};
 			name = Debug;
 		};
-		1A000033 /* Release */ = {
+		4A123456000000000000001C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -363,25 +355,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1A000022 /* Build configuration list for PBXNativeTarget "Pico" */ = {
+		4A1234560000000000000014 /* Build configuration list for PBXNativeTarget "Pico" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A000032 /* Debug */,
-				1A000033 /* Release */,
+				4A123456000000000000001B /* Debug */,
+				4A123456000000000000001C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1A000026 /* Build configuration list for PBXProject "Pico" */ = {
+		4A1234560000000000000018 /* Build configuration list for PBXProject "Pico" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A000030 /* Debug */,
-				1A000031 /* Release */,
+				4A1234560000000000000019 /* Debug */,
+				4A123456000000000000001A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 1A000025 /* Project object */;
+	rootObject = 4A1234560000000000000017 /* Project object */;
 }
