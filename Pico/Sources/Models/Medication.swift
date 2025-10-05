@@ -41,16 +41,27 @@ enum InjectionSite: String, CaseIterable, Codable {
     }
 }
 
-enum MedicationFrequency: String, CaseIterable, Codable {
-    case daily = "Daily"
-    case twiceDaily = "Twice Daily"
-    case weekly = "Weekly"
-    case biweekly = "Bi-weekly"
-    case monthly = "Monthly"
-    case asNeeded = "As Needed"
+enum MedicationFrequency: Codable, Hashable {
+    case daily
+    case twiceDaily
+    case weekly
+    case biweekly
+    case monthly
+    case asNeeded
+    case customDays(Int)
+    case customWeeks(Int)
     
     var displayName: String {
-        return self.rawValue
+        switch self {
+        case .daily: return "Daily"
+        case .twiceDaily: return "Twice Daily"
+        case .weekly: return "Weekly"
+        case .biweekly: return "Bi-weekly"
+        case .monthly: return "Monthly"
+        case .asNeeded: return "As Needed"
+        case .customDays(let days): return "Every \(days) day\(days == 1 ? "" : "s")"
+        case .customWeeks(let weeks): return "Every \(weeks) week\(weeks == 1 ? "" : "s")"
+        }
     }
     
     var intervalInDays: Int? {
@@ -61,6 +72,28 @@ enum MedicationFrequency: String, CaseIterable, Codable {
         case .biweekly: return 14
         case .monthly: return 30
         case .asNeeded: return nil
+        case .customDays(let days): return days
+        case .customWeeks(let weeks): return weeks * 7
         }
+    }
+    
+    // Predefined options for the picker
+    static let predefinedCases: [MedicationFrequency] = [
+        .daily, .twiceDaily, .weekly, .biweekly, .monthly, .asNeeded
+    ]
+    
+    // Helper to check if this is a custom frequency
+    var isCustom: Bool {
+        switch self {
+        case .customDays, .customWeeks:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    // For backward compatibility with CaseIterable functionality
+    static var allCases: [MedicationFrequency] {
+        return predefinedCases
     }
 }

@@ -163,6 +163,15 @@ struct AddMedicationView: View {
     @State private var selectedSite = InjectionSite.subcutaneous
     @State private var selectedFrequency = MedicationFrequency.daily
     @State private var notes = ""
+    @State private var showingCustomFrequency = false
+    @State private var customDays = 1
+    @State private var customWeeks = 1
+    @State private var customType: CustomFrequencyType = .days
+    
+    enum CustomFrequencyType: String, CaseIterable {
+        case days = "Days"
+        case weeks = "Weeks"
+    }
     
     var body: some View {
         NavigationView {
@@ -177,9 +186,72 @@ struct AddMedicationView: View {
                         }
                     }
                     
-                    Picker("Frequency", selection: $selectedFrequency) {
-                        ForEach(MedicationFrequency.allCases, id: \.self) { frequency in
-                            Text(frequency.displayName).tag(frequency)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Frequency")
+                            .font(.headline)
+                        
+                        Picker("Frequency", selection: $selectedFrequency) {
+                            ForEach(MedicationFrequency.allCases, id: \.self) { frequency in
+                                Text(frequency.displayName).tag(frequency)
+                            }
+                            Text("Custom").tag(MedicationFrequency.customDays(1))
+                        }
+                        .pickerStyle(.menu)
+                        .onChange(of: selectedFrequency) { _, newValue in
+                            if newValue.isCustom {
+                                showingCustomFrequency = true
+                            } else {
+                                showingCustomFrequency = false
+                            }
+                        }
+                        
+                        if showingCustomFrequency || selectedFrequency.isCustom {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Custom Interval")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                
+                                HStack {
+                                    Text("Every")
+                                    
+                                    Picker("Interval", selection: $customType) {
+                                        ForEach(CustomFrequencyType.allCases, id: \.self) { type in
+                                            Text(type.rawValue).tag(type)
+                                        }
+                                    }
+                                    .pickerStyle(.segmented)
+                                }
+                                
+                                HStack {
+                                    if customType == .days {
+                                        Stepper("\(customDays) day\(customDays == 1 ? "" : "s")", value: $customDays, in: 1...365)
+                                    } else {
+                                        Stepper("\(customWeeks) week\(customWeeks == 1 ? "" : "s")", value: $customWeeks, in: 1...52)
+                                    }
+                                }
+                                .onChange(of: customDays) { _, newValue in
+                                    if customType == .days {
+                                        selectedFrequency = .customDays(newValue)
+                                    }
+                                }
+                                .onChange(of: customWeeks) { _, newValue in
+                                    if customType == .weeks {
+                                        selectedFrequency = .customWeeks(newValue)
+                                    }
+                                }
+                                .onChange(of: customType) { _, newValue in
+                                    switch newValue {
+                                    case .days:
+                                        selectedFrequency = .customDays(customDays)
+                                    case .weeks:
+                                        selectedFrequency = .customWeeks(customWeeks)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(8)
                         }
                     }
                 }
@@ -191,6 +263,9 @@ struct AddMedicationView: View {
             }
             .navigationTitle("Add Medication")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                initializeCustomFrequency()
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -213,6 +288,21 @@ struct AddMedicationView: View {
                     .disabled(name.isEmpty || dosage.isEmpty)
                 }
             }
+        }
+    }
+    
+    private func initializeCustomFrequency() {
+        switch selectedFrequency {
+        case .customDays(let days):
+            customDays = days
+            customType = .days
+            showingCustomFrequency = true
+        case .customWeeks(let weeks):
+            customWeeks = weeks
+            customType = .weeks
+            showingCustomFrequency = true
+        default:
+            showingCustomFrequency = false
         }
     }
 }
