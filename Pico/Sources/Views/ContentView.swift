@@ -462,6 +462,8 @@ struct InjectionHistoryView: View {
 
 struct InjectionRecordRow: View {
     let record: InjectionRecord
+    @EnvironmentObject var medicationStore: MedicationStore
+    @State private var showingEditSheet = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -469,9 +471,22 @@ struct InjectionRecordRow: View {
                 Text(record.medicationName)
                     .font(.headline)
                 Spacer()
-                Text(formatDateTime(record.timestamp))
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(formatDateTime(record.timestamp))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    Button("Edit") {
+                        showingEditSheet = true
+                    }
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 2)
+                    .background(Color.gray.opacity(0.2))
+                    .foregroundColor(.primary)
+                    .cornerRadius(8)
+                }
             }
             
             HStack {
@@ -490,6 +505,9 @@ struct InjectionRecordRow: View {
             }
         }
         .padding(.vertical, 2)
+        .sheet(isPresented: $showingEditSheet) {
+            EditInjectionRecordView(record: record)
+        }
     }
     
     private func formatDateTime(_ date: Date) -> String {
@@ -497,6 +515,88 @@ struct InjectionRecordRow: View {
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         return formatter.string(from: date)
+    }
+}
+
+struct EditInjectionRecordView: View {
+    let originalRecord: InjectionRecord
+    @EnvironmentObject var medicationStore: MedicationStore
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var selectedSite: InjectionSite
+    @State private var notes: String
+    @State private var selectedDate: Date
+    
+    init(record: InjectionRecord) {
+        self.originalRecord = record
+        self._selectedSite = State(initialValue: record.injectionSite)
+        self._notes = State(initialValue: record.notes)
+        self._selectedDate = State(initialValue: record.timestamp)
+    }
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section("Injection Details") {
+                    HStack {
+                        Text("Medication:")
+                        Spacer()
+                        Text(originalRecord.medicationName)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    HStack {
+                        Text("Dosage:")
+                        Spacer()
+                        Text(originalRecord.dosage)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Picker("Injection Site", selection: $selectedSite) {
+                        ForEach(InjectionSite.allCases, id: \.self) { site in
+                            Text(site.displayName).tag(site)
+                        }
+                    }
+                    
+                    DatePicker(
+                        "Date & Time",
+                        selection: $selectedDate,
+                        displayedComponents: [.date, .hourAndMinute]
+                    )
+                }
+                
+                Section("Notes") {
+                    TextField("Optional notes about this injection", text: $notes, axis: .vertical)
+                        .lineLimit(3...6)
+                }
+            }
+            .navigationTitle("Edit Injection")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        saveChanges()
+                    }
+                    .disabled(selectedDate > Date()) // Prevent future dates
+                }
+            }
+        }
+    }
+    
+    private func saveChanges() {
+        var updatedRecord = originalRecord
+        updatedRecord.injectionSite = selectedSite
+        updatedRecord.notes = notes
+        updatedRecord.timestamp = selectedDate
+        
+        medicationStore.updateInjectionRecord(updatedRecord)
+        dismiss()
     }
 }
 

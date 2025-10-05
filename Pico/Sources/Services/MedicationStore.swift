@@ -85,9 +85,42 @@ class MedicationStore: ObservableObject {
             .sorted { $0.timestamp > $1.timestamp }
     }
     
+    func updateInjectionRecord(_ updatedRecord: InjectionRecord) {
+        if let index = injectionRecords.firstIndex(where: { $0.id == updatedRecord.id }) {
+            let oldRecord = injectionRecords[index]
+            injectionRecords[index] = updatedRecord
+            saveInjectionRecords()
+            
+            // If the timestamp changed and this is the most recent injection for the medication,
+            // update the medication's lastInjectionDate
+            if oldRecord.timestamp != updatedRecord.timestamp {
+                updateMedicationLastInjectionDate(for: updatedRecord.medicationId)
+            }
+        }
+    }
+    
     func deleteInjectionRecord(_ record: InjectionRecord) {
         injectionRecords.removeAll { $0.id == record.id }
         saveInjectionRecords()
+        
+        // Update medication's last injection date after deletion
+        updateMedicationLastInjectionDate(for: record.medicationId)
+    }
+    
+    private func updateMedicationLastInjectionDate(for medicationId: UUID) {
+        // Find the most recent injection for this medication
+        let medicationRecords = injectionRecords
+            .filter { $0.medicationId == medicationId }
+            .sorted { $0.timestamp > $1.timestamp }
+        
+        if let index = medications.firstIndex(where: { $0.id == medicationId }) {
+            medications[index].lastInjectionDate = medicationRecords.first?.timestamp
+            saveMedications()
+            
+            // Reschedule notifications
+            let updatedMedication = medications[index]
+            notificationService.scheduleRecurringNotifications(for: updatedMedication)
+        }
     }
     
     // MARK: - Persistence
@@ -149,11 +182,11 @@ class MedicationStore: ObservableObject {
 struct InjectionRecord: Identifiable, Codable {
     let id = UUID()
     let medicationId: UUID
-    let medicationName: String
-    let dosage: String
-    let injectionSite: InjectionSite
-    let timestamp: Date
-    let notes: String
+    var medicationName: String
+    var dosage: String
+    var injectionSite: InjectionSite
+    var timestamp: Date
+    var notes: String
     
     init(medicationId: UUID, medicationName: String, dosage: String, injectionSite: InjectionSite, notes: String = "") {
         self.medicationId = medicationId
