@@ -72,7 +72,7 @@ struct MedicationListView: View {
                 }
             }
             .sheet(isPresented: $showingAddMedication) {
-                AddMedicationView()
+                MedicationFormView()
             }
         }
     }
@@ -88,6 +88,7 @@ struct MedicationRowView: View {
     let medication: Medication
     @EnvironmentObject var medicationStore: MedicationStore
     @State private var showingInjectionSheet = false
+    @State private var showingEditSheet = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -129,21 +130,36 @@ struct MedicationRowView: View {
                             .foregroundColor(.secondary)
                     }
                     
-                    Button("Record Injection") {
-                        showingInjectionSheet = true
+                    HStack(spacing: 8) {
+                        Button("Edit") {
+                            showingEditSheet = true
+                        }
+                        .font(.caption)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background(Color.gray.opacity(0.2))
+                        .foregroundColor(.primary)
+                        .cornerRadius(12)
+                        
+                        Button("Record Injection") {
+                            showingInjectionSheet = true
+                        }
+                        .font(.caption)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
                     }
-                    .font(.caption)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 4)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
                 }
             }
         }
         .padding(.vertical, 4)
         .sheet(isPresented: $showingInjectionSheet) {
             RecordInjectionView(medication: medication)
+        }
+        .sheet(isPresented: $showingEditSheet) {
+            MedicationFormView(medication: medication)
         }
     }
     
@@ -154,9 +170,12 @@ struct MedicationRowView: View {
     }
 }
 
-struct AddMedicationView: View {
+struct MedicationFormView: View {
     @EnvironmentObject var medicationStore: MedicationStore
     @Environment(\.dismiss) private var dismiss
+    
+    // Optional medication for edit mode (nil = add mode)
+    let medicationToEdit: Medication?
     
     @State private var name = ""
     @State private var dosage = ""
@@ -171,6 +190,14 @@ struct AddMedicationView: View {
     enum CustomFrequencyType: String, CaseIterable {
         case days = "Days"
         case weeks = "Weeks"
+    }
+    
+    init(medication: Medication? = nil) {
+        self.medicationToEdit = medication
+    }
+    
+    var isEditMode: Bool {
+        medicationToEdit != nil
     }
     
     var body: some View {
@@ -261,9 +288,10 @@ struct AddMedicationView: View {
                         .lineLimit(3...6)
                 }
             }
-            .navigationTitle("Add Medication")
+            .navigationTitle(isEditMode ? "Edit Medication" : "Add Medication")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
+                populateFieldsFromMedication()
                 initializeCustomFrequency()
             }
             .toolbar {
@@ -275,20 +303,22 @@ struct AddMedicationView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        let medication = Medication(
-                            name: name,
-                            dosage: dosage,
-                            injectionSite: selectedSite,
-                            frequency: selectedFrequency,
-                            notes: notes
-                        )
-                        medicationStore.addMedication(medication)
-                        dismiss()
+                        saveMedication()
                     }
                     .disabled(name.isEmpty || dosage.isEmpty)
                 }
             }
         }
+    }
+    
+    private func populateFieldsFromMedication() {
+        guard let medication = medicationToEdit else { return }
+        
+        name = medication.name
+        dosage = medication.dosage
+        selectedSite = medication.injectionSite
+        selectedFrequency = medication.frequency
+        notes = medication.notes
     }
     
     private func initializeCustomFrequency() {
@@ -304,6 +334,31 @@ struct AddMedicationView: View {
         default:
             showingCustomFrequency = false
         }
+    }
+    
+    private func saveMedication() {
+        if isEditMode {
+            // Edit existing medication
+            guard let originalMedication = medicationToEdit else { return }
+            var updatedMedication = originalMedication
+            updatedMedication.name = name
+            updatedMedication.dosage = dosage
+            updatedMedication.injectionSite = selectedSite
+            updatedMedication.frequency = selectedFrequency
+            updatedMedication.notes = notes
+            medicationStore.updateMedication(updatedMedication)
+        } else {
+            // Add new medication
+            let medication = Medication(
+                name: name,
+                dosage: dosage,
+                injectionSite: selectedSite,
+                frequency: selectedFrequency,
+                notes: notes
+            )
+            medicationStore.addMedication(medication)
+        }
+        dismiss()
     }
 }
 
