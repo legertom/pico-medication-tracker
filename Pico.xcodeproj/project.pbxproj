@@ -11,6 +11,7 @@
 		4A1234560000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234560000000000000004 /* ContentView.swift */; };
 		4A1234560000000000000005 /* Medication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234560000000000000006 /* Medication.swift */; };
 		4A1234560000000000000007 /* MedicationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1234560000000000000008 /* MedicationStore.swift */; };
+		4A1234560000000000000009 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A123456000000000000000A /* NotificationService.swift */; };
 		4A123456000000000000001F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A123456000000000000001D /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -20,6 +21,7 @@
 		4A1234560000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4A1234560000000000000006 /* Medication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medication.swift; sourceTree = "<group>"; };
 		4A1234560000000000000008 /* MedicationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicationStore.swift; sourceTree = "<group>"; };
+		4A123456000000000000000A /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		4A123456000000000000001D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				4A1234560000000000000008 /* MedicationStore.swift */,
+				4A123456000000000000000A /* NotificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 				4A1234560000000000000003 /* ContentView.swift in Sources */,
 				4A1234560000000000000005 /* Medication.swift in Sources */,
 				4A1234560000000000000007 /* MedicationStore.swift in Sources */,
+				4A1234560000000000000009 /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

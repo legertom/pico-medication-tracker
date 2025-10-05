@@ -7,6 +7,7 @@ class MedicationStore: ObservableObject {
     
     private let medicationsKey = "PicoMedications"
     private let injectionsKey = "PicoInjections"
+    private let notificationService = NotificationService.shared
     
     init() {
         loadMedications()
@@ -18,16 +19,25 @@ class MedicationStore: ObservableObject {
     func addMedication(_ medication: Medication) {
         medications.append(medication)
         saveMedications()
+        
+        // Schedule notifications for the new medication
+        notificationService.scheduleRecurringNotifications(for: medication)
     }
     
     func updateMedication(_ medication: Medication) {
         if let index = medications.firstIndex(where: { $0.id == medication.id }) {
             medications[index] = medication
             saveMedications()
+            
+            // Reschedule notifications with updated medication details
+            notificationService.scheduleRecurringNotifications(for: medication)
         }
     }
     
     func deleteMedication(_ medication: Medication) {
+        // Cancel notifications for this medication
+        notificationService.cancelNotifications(for: medication)
+        
         medications.removeAll { $0.id == medication.id }
         // Also remove associated injection records
         injectionRecords.removeAll { $0.medicationId == medication.id }
@@ -60,6 +70,10 @@ class MedicationStore: ObservableObject {
         if let index = medications.firstIndex(where: { $0.id == medication.id }) {
             medications[index].lastInjectionDate = record.timestamp
             saveMedications()
+            
+            // Reschedule notifications based on the new injection date
+            let updatedMedication = medications[index]
+            notificationService.scheduleRecurringNotifications(for: updatedMedication)
         }
         
         saveInjectionRecords()

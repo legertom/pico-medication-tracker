@@ -501,9 +501,43 @@ struct InjectionRecordRow: View {
 }
 
 struct SettingsView: View {
+    @EnvironmentObject var notificationService: NotificationService
+    @EnvironmentObject var medicationStore: MedicationStore
+    
     var body: some View {
         NavigationView {
             Form {
+                Section("Notifications") {
+                    HStack {
+                        Image(systemName: "bell.fill")
+                            .foregroundColor(.blue)
+                        Text("Injection Reminders")
+                        Spacer()
+                        Text(notificationStatusText)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    if notificationService.authorizationStatus == .denied {
+                        Text("Notifications are disabled. Please enable them in Settings to receive injection reminders.")
+                            .font(.caption)
+                            .foregroundColor(.orange)
+                    } else if !notificationService.isAuthorized {
+                        Button("Enable Notifications") {
+                            Task {
+                                await notificationService.requestPermission()
+                            }
+                        }
+                        .foregroundColor(.blue)
+                    }
+                    
+                    if notificationService.isAuthorized {
+                        Text("🎯 Notifications are scheduled automatically when you add medications or record injections.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
                 Section("About") {
                     HStack {
                         Text("Version")
@@ -520,8 +554,41 @@ struct SettingsView: View {
                     Link("Contact Support", destination: URL(string: "mailto:support@pico.app")!)
                     Link("Report a Bug", destination: URL(string: "https://example.com/bug-report")!)
                 }
+                
+                if notificationService.isAuthorized {
+                    Section("Debug") {
+                        Button("Cancel All Notifications") {
+                            notificationService.cancelAllNotifications()
+                        }
+                        .foregroundColor(.red)
+                        
+                        Button("Reschedule All Notifications") {
+                            for medication in medicationStore.activeMedications {
+                                notificationService.scheduleRecurringNotifications(for: medication)
+                            }
+                        }
+                        .foregroundColor(.blue)
+                    }
+                }
             }
             .navigationTitle("Settings")
+        }
+    }
+    
+    private var notificationStatusText: String {
+        switch notificationService.authorizationStatus {
+        case .authorized:
+            return "Enabled"
+        case .denied:
+            return "Disabled"
+        case .notDetermined:
+            return "Not Set"
+        case .provisional:
+            return "Provisional"
+        case .ephemeral:
+            return "Ephemeral"
+        @unknown default:
+            return "Unknown"
         }
     }
 }
