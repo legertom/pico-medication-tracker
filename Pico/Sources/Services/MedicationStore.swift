@@ -86,16 +86,31 @@ class MedicationStore: ObservableObject {
     }
     
     func updateInjectionRecord(_ updatedRecord: InjectionRecord) {
+        print("🔄 Updating injection record: \(updatedRecord.id)")
+        print("   Old site: \(injectionRecords.first(where: { $0.id == updatedRecord.id })?.injectionSite.displayName ?? "unknown")")
+        print("   New site: \(updatedRecord.injectionSite.displayName)")
+        print("   New notes: \(updatedRecord.notes)")
+        
         if let index = injectionRecords.firstIndex(where: { $0.id == updatedRecord.id }) {
             let oldRecord = injectionRecords[index]
             injectionRecords[index] = updatedRecord
+            
+            // Force UI update by triggering objectWillChange
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
+            
             saveInjectionRecords()
+            print("✅ Injection record updated and saved")
             
             // If the timestamp changed and this is the most recent injection for the medication,
             // update the medication's lastInjectionDate
             if oldRecord.timestamp != updatedRecord.timestamp {
+                print("📅 Timestamp changed, updating medication last injection date")
                 updateMedicationLastInjectionDate(for: updatedRecord.medicationId)
             }
+        } else {
+            print("❌ Could not find injection record to update")
         }
     }
     

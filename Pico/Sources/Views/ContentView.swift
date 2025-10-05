@@ -528,6 +528,11 @@ struct EditInjectionRecordView: View {
     @State private var selectedDate: Date
     
     init(record: InjectionRecord) {
+        print("🔍 EditInjectionRecordView init - Editing record for \(record.medicationName)")
+        print("   Site: \(record.injectionSite.displayName)")
+        print("   Notes: \(record.notes)")
+        print("   Date: \(record.timestamp)")
+        
         self.originalRecord = record
         self._selectedSite = State(initialValue: record.injectionSite)
         self._notes = State(initialValue: record.notes)
@@ -570,7 +575,7 @@ struct EditInjectionRecordView: View {
                         .lineLimit(3...6)
                 }
             }
-            .navigationTitle("Edit Injection")
+            .navigationTitle("Edit Injection ✏️")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -580,7 +585,7 @@ struct EditInjectionRecordView: View {
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button("Update") {
                         saveChanges()
                     }
                     .disabled(selectedDate > Date()) // Prevent future dates
@@ -590,12 +595,20 @@ struct EditInjectionRecordView: View {
     }
     
     private func saveChanges() {
+        print("💾 Saving injection record changes")
+        print("   Original site: \(originalRecord.injectionSite.displayName)")
+        print("   New site: \(selectedSite.displayName)")
+        print("   Original notes: \(originalRecord.notes)")
+        print("   New notes: \(notes)")
+        
         var updatedRecord = originalRecord
         updatedRecord.injectionSite = selectedSite
         updatedRecord.notes = notes
         updatedRecord.timestamp = selectedDate
         
+        print("   Calling updateInjectionRecord...")
         medicationStore.updateInjectionRecord(updatedRecord)
+        print("   Dismissing edit view...")
         dismiss()
     }
 }
